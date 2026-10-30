@@ -1,10 +1,10 @@
 {
   "format": "hblauncher.gpu-app",
   "abi": 1,
-  "id": "my-shader-app",
-  "name": "My Shader App",
+  "id": "hello-shader",
+  "name": "Hello Shader",
   "version": "1.0.0",
-  "description": "A GPUBrew shader app built from sw2-app-boilerplate",
+  "description": "Hello world as a GPUBrew shader app",
   "icon": "icon.png",
   "initialState": "assets/state.bin",
   "shaders": {

@@ -1,5 +1,5 @@
 /*
- * My App - sw2-app-boilerplate native starter.
+ * Hello World - sw2-app-boilerplate native starter.
  *
  * Shows the parts most apps need: the frame loop, controller and touch input,
  * the 2D UI, a packaged asset (assets/greeting.txt) and the persistent save
@@ -81,7 +81,7 @@ int hbx_app_main(const struct hbx_ctx *ctx) {
         y = y < 460.0f ? 460.0f : y > 1040.0f ? 1040.0f : y;
 
         hbx_ui_begin(ctx, HBX_RGB(246, 247, 249));
-        hbx_ui_text(ctx, 120.0f, 110.0f, HBX_FONT_TITLE, "My App", INK);
+        hbx_ui_text(ctx, 120.0f, 110.0f, HBX_FONT_TITLE, "Hello World", INK);
         hbx_ui_text(ctx, 124.0f, 230.0f, HBX_FONT_H2, greeting[0] ? greeting : "(no greeting asset)", MUTED);
 
         hbx_ui_text(ctx, 124.0f, 300.0f, HBX_FONT_BODY, "A presses this session:", MUTED);

@@ -5,10 +5,6 @@ on:
   pull_request:
   workflow_dispatch:
 
-env:
-  # Point this at your sw2-sdk fork or a pinned tag if needed.
-  SW2_SDK_REPO: ${{ vars.SW2_SDK_REPO || 'https://github.com/sw2-homebrew-dev/sw2-sdk.git' }}
-  SW2_SDK_REF: ${{ vars.SW2_SDK_REF || 'main' }}
 
 jobs:
   build:
@@ -29,9 +25,13 @@ jobs:
         run: |
           brew install llvm lld glslang spirv-tools
           python3 -m pip install --break-system-packages Pillow
-      - name: SDK
-        run: git clone --depth 1 --branch "$SW2_SDK_REF" "$SW2_SDK_REPO" .sw2-sdk
-      - run: SW2_SDK=.sw2-sdk ./build.sh
+      - name: sw2-sdk (release)
+        env:
+          SW2_VERSION: ${{ vars.SW2_SDK_VERSION }}
+        run: |
+          curl -fsSL https://github.com/sw2-homebrew-dev/sw2-sdk/releases/latest/download/install.sh | sh
+          echo "SW2_SDK=$HOME/.local/share/sw2-sdk" >> "$GITHUB_ENV"
+      - run: ./build.sh
       - uses: actions/upload-artifact@v4
         with:
           name: packages-${{ matrix.os }}

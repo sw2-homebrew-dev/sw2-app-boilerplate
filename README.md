@@ -14,7 +14,8 @@ There are two starters. Keep the one you want and delete the other folder.
 
 ## First steps
 
-1. Pick an id: lowercase, matching `[a-z0-9][a-z0-9._-]*`. Put it in
+1. Pick your own id (the starters ship as `hello-world` and `hello-shader`):
+   lowercase, matching `[a-z0-9][a-z0-9._-]*`. Put it in
    `native/manifest.json` (or `gpubrew/app.json`) along with the name and
    description.
 2. Set up the toolchain and run `sw2 doctor` from your sw2-sdk checkout.
@@ -23,7 +24,7 @@ There are two starters. Keep the one you want and delete the other folder.
 3. Build:
 
    ```sh
-   SW2_SDK=../sw2-sdk ./build.sh        # writes dist/<id>-<version>.zip + catalog record
+   ./build.sh        # uses $SW2_SDK, ../sw2-sdk, or an installed release; writes dist/
    ```
 
 4. Try it: copy `native/` into `sw2-sdk/apps/<id>/`, then run `sw2 run --mock`
@@ -42,8 +43,7 @@ Repository variables (Settings → Variables) can change these values:
 
 | Variable | Default |
 | --- | --- |
-| `SW2_SDK_REPO` | `https://github.com/sw2-homebrew-dev/sw2-sdk.git` |
-| `SW2_SDK_REF` | `main` |
+| `SW2_SDK_VERSION` | latest sw2-sdk release (for example `v0.1.0` to pin) |
 | `CATALOG_CATEGORY` | `app` |
 | `LICENSE_ID` | `MIT` |
 

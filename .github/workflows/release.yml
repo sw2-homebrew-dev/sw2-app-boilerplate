@@ -8,9 +8,6 @@ on:
 permissions:
   contents: write
 
-env:
-  SW2_SDK_REPO: ${{ vars.SW2_SDK_REPO || 'https://github.com/sw2-homebrew-dev/sw2-sdk.git' }}
-  SW2_SDK_REF: ${{ vars.SW2_SDK_REF || 'main' }}
 
 jobs:
   release:
@@ -21,10 +18,14 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y python3-pil gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu \
             glslang-tools spirv-tools
-      - run: git clone --depth 1 --branch "$SW2_SDK_REF" "$SW2_SDK_REPO" .sw2-sdk
+      - name: sw2-sdk (release)
+        env:
+          SW2_VERSION: ${{ vars.SW2_SDK_VERSION }}
+        run: |
+          curl -fsSL https://github.com/sw2-homebrew-dev/sw2-sdk/releases/latest/download/install.sh | sh
+          echo "SW2_SDK=$HOME/.local/share/sw2-sdk" >> "$GITHUB_ENV"
       - name: Build and package
         env:
-          SW2_SDK: .sw2-sdk
           URL_BASE: https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}
           AUTHOR: ${{ github.repository_owner }}
           SOURCE_REPO: https://github.com/${{ github.repository }}

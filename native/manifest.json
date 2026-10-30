@@ -1,7 +1,7 @@
 {
-  "id": "my-app",
-  "name": "My App",
-  "description": "A native app built from sw2-app-boilerplate",
+  "id": "hello-world",
+  "name": "Hello World",
+  "description": "Hello world for Switch 2: input, touch, assets and a save block",
   "version": "1.0.0",
   "abi": 3,
   "kind": "native",
