@@ -1,0 +1,12 @@
+{
+  "id": "my-app",
+  "name": "My App",
+  "description": "A native app built from sw2-app-boilerplate",
+  "version": "1.0.0",
+  "abi": 3,
+  "kind": "native",
+  "icon": "icon.png",
+  "assets": ["greeting.txt"],
+  "save_bytes": 4096,
+  "limits": {"heap_bytes": 4194304, "stack_bytes": 1048576, "frames": 1000000}
+}

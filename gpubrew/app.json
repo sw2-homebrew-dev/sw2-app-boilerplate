@@ -1,0 +1,15 @@
+{
+  "format": "hblauncher.gpu-app",
+  "abi": 1,
+  "id": "my-shader-app",
+  "name": "My Shader App",
+  "version": "1.0.0",
+  "description": "A GPUBrew shader app built from sw2-app-boilerplate",
+  "icon": "icon.png",
+  "initialState": "assets/state.bin",
+  "shaders": {
+    "vertex": "build/app.vert.spv",
+    "fragment": "build/app.frag.spv",
+    "compute": "build/app.comp.spv"
+  }
+}

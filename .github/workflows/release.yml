@@ -1,0 +1,47 @@
+name: release
+# Push a tag like v1.0.0 (matching the version in your manifest) to publish a
+# GitHub release with the zip, its sha256 and a ready-to-submit catalog record.
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+env:
+  SW2_SDK_REPO: ${{ vars.SW2_SDK_REPO || 'https://github.com/sw2-homebrew-dev/sw2-sdk.git' }}
+  SW2_SDK_REF: ${{ vars.SW2_SDK_REF || 'main' }}
+
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-pil gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu \
+            glslang-tools spirv-tools
+      - run: git clone --depth 1 --branch "$SW2_SDK_REF" "$SW2_SDK_REPO" .sw2-sdk
+      - name: Build and package
+        env:
+          SW2_SDK: .sw2-sdk
+          URL_BASE: https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}
+          AUTHOR: ${{ github.repository_owner }}
+          SOURCE_REPO: https://github.com/${{ github.repository }}
+          CATEGORY: ${{ vars.CATALOG_CATEGORY || 'app' }}
+          LICENSE_ID: ${{ vars.LICENSE_ID || 'MIT' }}
+        run: ./build.sh
+      - name: Check the tag matches the package versions
+        run: |
+          tag=${GITHUB_REF_NAME#v}
+          for f in dist/*.catalog.json; do
+            v=$(python3 -c "import json,sys;print(json.load(open(sys.argv[1]))['version'])" "$f")
+            [ "$v" = "$tag" ] || { echo "$f has version $v but the tag is $GITHUB_REF_NAME"; exit 1; }
+          done
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" dist/*.zip dist/*.sha256 dist/*.catalog.json \
+            --title "$GITHUB_REF_NAME" \
+            --notes "Submit \`*.catalog.json\` to sw2-homebrew-catalog as apps/<id>.json."
